@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Liste des Paiements</title>
+  <link th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/webjars/font-awesome/6.5.1/css/all.min.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container my-5">
+  <h1 class="text-center mb-4">Paiements</h1>
+  <a href="/paiement/new" class="btn btn-success mb-4">Ajouter un paiement</a>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Contrat</th>
+      <th>Montant</th>
+      <th>Date Paiement</th>
+      <th>Mode</th>
+      <th>Statut</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="paiement : ${paiements}">
+      <td th:text="${paiement.id}"></td>
+      <td th:text="${paiement.contrat?.id} ?: 'N/A'"></td>
+      <td th:text="${paiement.montant} + ' €'"></td>
+      <td th:text="${paiement.datePaiement}"></td>
+      <td th:text="${paiement.modePaiement}"></td>
+      <td th:text="${paiement.statut}"></td>
+      <td>
+        <a th:href="@{/paiement/edit/{id}(id=${paiement.id})}" class="btn btn-sm btn-primary">Modifier</a>
+        <a th:href="@{/paiement/delete/{id}(id=${paiement.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr ?');">Supprimer</a>
+        <a th:href="@{/paiement/facture/{id}(id=${paiement.id})}" class="btn btn-sm btn-info">Facture</a>
+      </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(paiements)}">
+      <td colspan="7" class="text-center">Aucun paiement disponible.</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

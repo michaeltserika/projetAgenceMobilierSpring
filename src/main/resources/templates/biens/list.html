@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Biens</title>
+    <link th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/6.5.1/css/all.min.css}" rel="stylesheet">
+    <style>
+        .card { transition: transform 0.3s; }
+        .card:hover { transform: scale(1.05); }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container my-5">
+    <h1 class="text-center mb-4">Biens Immobiliers</h1>
+    <a href="/bien/new" class="btn btn-success mb-4">Ajouter un bien</a>
+    <div class="row">
+        <div class="col-md-4 mb-4" th:each="bien : ${biens}">
+            <div class="card shadow-sm">
+                <img th:src="${bien.imagePath}" class="card-img-top" th:alt="${bien.titre}" th:unless="${bien.imagePath == null}">
+                <p th:if="${bien.imagePath == null}" class="text-center">Aucune image disponible</p>
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${bien.titre}"></h5>
+                    <p class="card-text" th:text="${bien.description}"></p>
+                    <p><i class="fas fa-home"></i> <span th:text="${bien.type} + ' - ' + bien.surface + ' m²'"></span></p>
+                    <p><i class="fas fa-map-marker-alt"></i> <span th:text="${bien.ville}"></span></p>
+                    <p><strong th:text="${bien.prix} + ' €'"></strong></p>
+                    <!-- Debug : Afficher le chemin brut -->
+                    <p class="text-muted">Chemin image: <span th:text="${bien.imagePath}"></span></p>
+                    <a th:href="@{/bien/edit/{id}(id=${bien.id})}" class="btn btn-sm btn-primary">Modifier</a>
+                    <a th:href="@{/bien/delete/{id}(id=${bien.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr ?');">Supprimer</a>
+                </div>
+            </div>
+        </div>
+        <div th:if="${#lists.isEmpty(biens)}" class="col-12 text-center">
+            <p>Aucun bien disponible pour le moment.</p>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

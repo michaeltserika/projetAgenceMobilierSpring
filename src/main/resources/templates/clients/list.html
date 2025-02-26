@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Clients</title>
+    <link th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/6.5.1/css/all.min.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container my-5">
+    <h1 class="text-center mb-4">Clients</h1>
+    <a href="/client/new" class="btn btn-success mb-4">Ajouter un client</a>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Email</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="client : ${clients}">
+            <td th:text="${client.id}"></td>
+            <td th:text="${client.nom}"></td>
+            <td th:text="${client.prenom}"></td>
+            <td th:text="${client.email}"></td>
+            <td>
+                <img th:src="${client.imagePath}" style="max-width: 100px;" alt="Image client" th:unless="${client.imagePath == null}">
+                <span th:if="${client.imagePath == null}">Aucune image</span>
+            </td>
+            <td>
+                <a th:href="@{/client/edit/{id}(id=${client.id})}" class="btn btn-sm btn-primary">Modifier</a>
+                <a th:href="@{/client/delete/{id}(id=${client.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr ?');">Supprimer</a>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(clients)}">
+            <td colspan="6" class="text-center">Aucun client disponible.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

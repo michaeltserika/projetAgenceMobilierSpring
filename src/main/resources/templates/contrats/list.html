@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Contrats</title>
+    <link th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/6.5.1/css/all.min.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container my-5">
+    <h1 class="text-center mb-4">Contrats</h1>
+    <a href="/contrat/new" class="btn btn-success mb-4">Ajouter un contrat</a>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Bien</th>
+            <th>Client</th>
+            <th>Agent</th>
+            <th>Date Signature</th>
+            <th>Montant</th>
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="contrat : ${contrats}">
+            <td th:text="${contrat.id}"></td>
+            <td th:text="${contrat.bien?.titre} ?: 'N/A'"></td>
+            <td th:text="${contrat.client?.nom} + ' ' + ${contrat.client?.prenom} ?: 'N/A'"></td>
+            <td th:text="${contrat.agent?.nom} ?: 'N/A'"></td>
+            <td th:text="${contrat.dateSignature}"></td>
+            <td th:text="${contrat.montant} + ' €'"></td>
+            <td th:text="${contrat.statut}"></td>
+            <td>
+                <a th:href="@{/contrat/edit/{id}(id=${contrat.id})}" class="btn btn-sm btn-primary">Modifier</a>
+                <a th:href="@{/contrat/delete/{id}(id=${contrat.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr ?');">Supprimer</a>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(contrats)}">
+            <td colspan="8" class="text-center">Aucun contrat disponible.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${utilisateur.id == null} ? 'Ajouter un Utilisateur' : 'Modifier un Utilisateur'">Utilisateur</title>
+    <link th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/webjars/font-awesome/6.5.1/css/all.min.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container my-5">
+    <h1 class="text-center mb-4" th:text="${utilisateur.id == null} ? 'Ajouter un utilisateur' : 'Modifier un utilisateur'"></h1>
+    <form th:action="@{/utilisateur/save}" th:object="${utilisateur}" method="post" class="row g-3">
+        <input type="hidden" th:field="*{id}">
+        <div class="col-md-6">
+            <label for="nom" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="nom" th:field="*{nom}" required>
+        </div>
+        <div class="col-md-6">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" th:field="*{email}" required>
+        </div>
+        <div class="col-md-6">
+            <label for="motDePasse" class="form-label">Mot de passe</label>
+            <input type="password" class="form-control" id="motDePasse" th:field="*{motDePasse}" th:required="${utilisateur.id == null}"/>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <a href="/utilisateurs" class="btn btn-secondary">Annuler</a>
+        </div>
+    </form>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

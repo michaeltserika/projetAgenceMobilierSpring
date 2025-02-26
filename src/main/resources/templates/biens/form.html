@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${bien.id == null} ? 'Ajouter un Bien' : 'Modifier un Bien'">Bien</title>
+  <link th:href="@{/webjars/bootstrap/5.3.2/css/bootstrap.min.css}" rel="stylesheet">
+  <link th:href="@{/webjars/font-awesome/6.5.1/css/all.min.css}" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+<div class="container my-5">
+  <h1 class="text-center mb-4" th:text="${bien.id == null} ? 'Ajouter un bien' : 'Modifier un bien'"></h1>
+  <form th:action="@{/bien/save}" th:object="${bien}" method="post" enctype="multipart/form-data" class="row g-3">
+    <input type="hidden" th:field="*{id}">
+    <div class="col-md-6">
+      <label for="titre" class="form-label">Titre</label>
+      <input type="text" class="form-control" id="titre" th:field="*{titre}" required>
+    </div>
+    <div class="col-md-6">
+      <label for="description" class="form-label">Description</label>
+      <textarea class="form-control" id="description" th:field="*{description}" required></textarea>
+    </div>
+    <div class="col-md-6">
+      <label for="prix" class="form-label">Prix (€)</label>
+      <input type="number" step="0.01" class="form-control" id="prix" th:field="*{prix}" required>
+    </div>
+    <div class="col-md-6">
+      <label for="type" class="form-label">Type</label>
+      <select class="form-select" id="type" th:field="*{type}" required>
+        <option value="Appartement">Appartement</option>
+        <option value="Maison">Maison</option>
+        <option value="Terrain">Terrain</option>
+        <option value="Bureau">Bureau</option>
+        <option value="Local_Commercial">Local Commercial</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label for="surface" class="form-label">Surface (m²)</label>
+      <input type="number" step="0.01" class="form-control" id="surface" th:field="*{surface}" required>
+    </div>
+    <div class="col-md-6">
+      <label for="adresse" class="form-label">Adresse</label>
+      <input type="text" class="form-control" id="adresse" th:field="*{adresse}" required>
+    </div>
+    <div class="col-md-6">
+      <label for="ville" class="form-label">Ville</label>
+      <input type="text" class="form-control" id="ville" th:field="*{ville}" required>
+    </div>
+    <div class="col-md-6">
+      <label for="codePostal" class="form-label">Code Postal</label>
+      <input type="text" class="form-control" id="codePostal" th:field="*{codePostal}" required>
+    </div>
+    <div class="col-md-6">
+      <label for="imageFile" class="form-label">Image</label>
+      <input type="file" class="form-control" id="imageFile" name="imageFile" accept="image/*" th:required="${bien.id == null}"/>
+      <img th:if="${bien.imagePath != null}" th:src="${bien.imagePath}" style="max-width: 100px;" alt="Aperçu"/>
+    </div>
+    <div class="col-md-6">
+      <label for="statut" class="form-label">Statut</label>
+      <select class="form-select" id="statut" th:field="*{statut}" required>
+        <option value="Disponible">Disponible</option>
+        <option value="Vendu">Vendu</option>
+        <option value="En_attente">En attente</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label for="agentId" class="form-label">Agent</label>
+      <select class="form-select" id="agentId" th:field="*{agentId}" required>
+        <option value="">Sélectionner un agent</option>
+        <option th:each="utilisateur : ${utilisateurs}"
+                th:value="${utilisateur.id}"
+                th:text="${utilisateur.nom} + ' (' + utilisateur.email + ')'"></option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label for="proprietaireId" class="form-label">Propriétaire</label>
+      <select class="form-select" id="proprietaireId" th:field="*{proprietaireId}" required>
+        <option value="">Sélectionner un propriétaire</option>
+        <option th:each="proprietaire : ${proprietaires}"
+                th:value="${proprietaire.id}"
+                th:text="${proprietaire.nom} + ' ' + proprietaire.prenom + ' (' + proprietaire.email + ')'"></option>
+      </select>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+      <a href="/biens" class="btn btn-secondary">Annuler</a>
+    </div>
+  </form>
+</div>
+<div th:replace="~{fragments/footer :: footer}"></div>
+<script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>
